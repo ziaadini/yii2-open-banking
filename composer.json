@@ -1,5 +1,5 @@
 {
-  "name": "sadi01/yii2-open-banking",
+  "name": "ziaadini/yii2-open-banking",
   "description": "Yii2 Open Banking Service",
   "keywords": [
     "yii2",
@@ -8,12 +8,12 @@
     "Open Banking",
     "Bank"
   ],
-  "homepage": "https://github.com/Sadi01/yii2-open-banking",
+  "homepage": "https://github.com/ziaadini/yii2-open-banking",
   "type": "yii2-extension",
   "license": "BSD-3-Clause",
   "support": {
-    "issues": "https://github.com/Sadi01/yii2-open-banking/issues?state=open",
-    "source": "https://github.com/Sadi01/yii2-open-banking"
+    "issues": "https://github.com/ziaadini/yii2-open-banking/issues?state=open",
+    "source": "https://github.com/ziaadini/yii2-open-banking"
   },
   "authors": [
     {

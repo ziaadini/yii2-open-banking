@@ -1,9 +1,9 @@
 <p align="center">
     <a href="https://en.wikipedia.org/wiki/Business_intelligence" target="_blank" rel="external">
-        <img src="https://raw.githubusercontent.com/Sadi01/yii2-bi-dashboard/master/src/img/yii.png" height="80px">
+        <img src="https://raw.githubusercontent.com/ziaadini/yii2-bi-dashboard/master/src/img/yii.png" height="80px">
     </a>
     <a href="" target="_blank" rel="external">
-        <img src="https://raw.githubusercontent.com/Sadi01/yii2-open-banking/master/src/img/ob.png" height="80px">
+        <img src="https://raw.githubusercontent.com/ziaadini/yii2-open-banking/master/src/img/ob.png" height="80px">
     </a>
     <h1 align="center">Open banking extension for Yii 2</h1>
     <br>
@@ -27,7 +27,7 @@ Installation
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/):
 
 ```
-composer require --prefer-dist sadi01/yii2-open-banking"*"
+composer require --prefer-dist ziaadini/yii2-open-banking"*"
 ```
 
 ### Alternative Method:
@@ -38,7 +38,7 @@ following entry to the `require` section:
 ```json
 {
   "require": {
-    "sadi01/yii2-open-banking": "*"
+    "ziaadini/yii2-open-banking": "*"
   }
 }
 ```
@@ -88,7 +88,7 @@ DB Migrations
 Run module migrations:
 
 ```php
-php yii migrate --migrationPath=@sadi01/openbanking/migrations
+php yii migrate --migrationPath=@ziaadini/openbanking/migrations
 ```
 
 Or, Add migrations path in console application config:
@@ -99,7 +99,7 @@ Or, Add migrations path in console application config:
         'class' => 'yii\console\controllers\MigrateController',
         'migrationNamespaces' => [],
         'migrationPath' => [
-            '@vendor/sadi01/yii2-open-banking/src/migrations',
+            '@vendor/ziaadini/yii2-open-banking/src/migrations',
             '@app/migrations'
         ]
     ],
