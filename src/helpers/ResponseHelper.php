@@ -19,4 +19,14 @@ class ResponseHelper
         $mapedResponse->errors = $errors;
         return $mapedResponse;
     }
+
+
+    public static function mapIranian($response)
+    {
+        $mapedResponse = new \stdClass();
+        $mapedResponse->errors = $response['data']->messages;
+        $mapedResponse->success = !$response['data']->hasError;
+        $mapedResponse->data = $response['data']->data;
+        return $mapedResponse;
+    }
 }

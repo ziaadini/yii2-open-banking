@@ -27,6 +27,7 @@ class ObOauthAccessTokens extends \yii\db\ActiveRecord
     const SCENARIO_DELETE = 'delete';
 
     public ?string $national_code = null;
+    public ?string $api_key = null;
 
     /**
      * {@inheritdoc}
@@ -45,7 +46,7 @@ class ObOauthAccessTokens extends \yii\db\ActiveRecord
             [['access_token', 'client_id', 'user_id'], 'required'],
             [['expires', 'add_on'], 'safe'],
             [['user_id'], 'integer'],
-            [['access_token'], 'string', 'max' => 2048],
+            [['access_token','api_key'], 'string', 'max' => 2048],
             [['client_id'], 'string', 'max' => 32],
             [['national_code'], 'string', 'max' => 10],
             [['scope'], 'string', 'max' => 2000],
@@ -118,7 +119,8 @@ class ObOauthAccessTokens extends \yii\db\ActiveRecord
                 'class' => Jsonable::class,
                 'jsonAttributes' => [
                     'add_on' => [
-                        'national_code'
+                        'national_code',
+                        'api_key',
                         // Your json attributes
                     ],
                 ],

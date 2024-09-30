@@ -33,7 +33,7 @@ class ObOauthClients extends \yii\db\ActiveRecord
     const PLATFORM_FINNOTECH = 2;
     const PLATFORM_SHAHIN = 3;
     const PLATFORM_SHAHKAR = 4;
-    const PLATFORM_IRABIAN = 4;
+    const PLATFORM_IRABIAN = 5;
 
 
     public ?string $app_key = null;
@@ -173,7 +173,8 @@ class ObOauthClients extends \yii\db\ActiveRecord
                         'app_password',
                         'nid',
                         'finno_limit',
-                        'finno_count'
+                        'finno_count',
+
                     ],
                 ],
             ],

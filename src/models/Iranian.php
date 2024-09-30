@@ -7,7 +7,7 @@ use yii\base\Model;
 
 class Iranian extends Model
 {
-    public $code;
+    public $hash_code;
     public $api_key;
 
 
@@ -23,14 +23,20 @@ class Iranian extends Model
     public function rules()
     {
         return [
-            [['code','api_key'], 'required', 'on' => [
+            [['hash_code','api_key'], 'required', 'on' => [
                 self::SCENARIO_VALIDATE,
                 self::SCENARIO_STATUS,
                 self::SCENARIO_REGENERATE_REPORT,
-                self::SCENARIO_REPORT_XML,
-                self::SCENARIO_REPORT_PDF,
                 self::SCENARIO_RENEW_TOKEN
             ]],
+            [['code'], 'required', 'on' => [
+                self::SCENARIO_VALIDATE,
+            ]],
+            [['report_code'], 'required', 'on' => [
+                self::SCENARIO_REPORT_XML,
+                self::SCENARIO_REPORT_PDF,
+            ]],
+            [['hash_code','report_code'], 'string'],
             [['code'], 'integer'],
         ];
     }
@@ -39,7 +45,7 @@ class Iranian extends Model
     public function attributeLabels()
     {
         return [
-            'code' => Yii::t('openBanking', 'Code'),
+            'hash_code' => Yii::t('openBanking', 'hash_code'),
         ];
     }
 
@@ -48,14 +54,16 @@ class Iranian extends Model
     {
         $scenarios = parent::scenarios();
 
-        $scenarios[self::SCENARIO_REQUEST] = ['code'];
-        $scenarios[self::SCENARIO_VALIDATE] = ['code'];
-        $scenarios[self::SCENARIO_STATUS] = ['code'];
-        $scenarios[self::SCENARIO_REGENERATE_REPORT] = ['code'];
-        $scenarios[self::SCENARIO_REPORT_XML] = ['code'];
-        $scenarios[self::SCENARIO_REPORT_PDF] = ['code'];
-        $scenarios[self::SCENARIO_RENEW_TOKEN] = ['code'];
+        $scenarios[self::SCENARIO_REQUEST] = ['hash_code'];
+        $scenarios[self::SCENARIO_VALIDATE] = ['hash_code'];
+        $scenarios[self::SCENARIO_STATUS] = ['hash_code'];
+        $scenarios[self::SCENARIO_REGENERATE_REPORT] = ['hash_code'];
+        $scenarios[self::SCENARIO_REPORT_XML] = ['hash_code'];
+        $scenarios[self::SCENARIO_REPORT_PDF] = ['hash_code'];
+        $scenarios[self::SCENARIO_RENEW_TOKEN] = ['hash_code'];
 
         return $scenarios;
     }
+
+
 }

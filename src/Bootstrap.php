@@ -41,6 +41,9 @@ class Bootstrap implements BootstrapInterface
             'shahkar' => [
                 'class' => 'sadi01\openbanking\components\shahkar\Shahkar',
             ],
+            'iranian' => [
+                'class' => 'sadi01\openbanking\components\iranian\Iranian',
+            ],
         ]);
 
 

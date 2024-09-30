@@ -72,6 +72,7 @@ class ApiClient extends Component
         while ($attempt < $this->maxRetries) {
             $attempt++;
             try {
+
                 $request = $this->client->createRequest()
                     ->setFormat($headers['Content-Type'] ?? Client::FORMAT_JSON)
                     ->setMethod($method)
@@ -80,7 +81,6 @@ class ApiClient extends Component
                     ->addHeaders($headers);
 
                 $response = $request->send();
-                $this->logRequest($method, $url, $data, $response, $headers, $clientId, $serviceType);
 
                 if ($response->isOk) {
                     return [

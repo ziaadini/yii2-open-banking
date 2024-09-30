@@ -9,7 +9,7 @@ use sadi01\openbanking\models\ObOauthClients;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\httpclient\Client;
-use sadi01\openbanking\models\iranian as IranianBaseModel;
+use sadi01\openbanking\models\Iranian as IranianBaseModel;
 
 class Iranian extends OpenBanking implements IranianInterface
 {
@@ -31,9 +31,9 @@ class Iranian extends OpenBanking implements IranianInterface
         }
     }
 
+
     /**
-     * Send request to Iranian API.
-     * @param array $data
+     * @param $data
      * @return \stdClass
      */
     public function request($data)
@@ -44,33 +44,37 @@ class Iranian extends OpenBanking implements IranianInterface
                 BaseOpenBanking::IRANIAN_REQUEST,
                 BaseOpenBanking::getUrl(BaseOpenBanking::IRANIAN_REQUEST),
                 $data,
-                $this->getHeaders()
+                $this->getHeaders(false)
             );
-            return ResponseHelper::mapFaraboom($response);
-        } else {
-            return $this->setErrors($this->model->errors);
-        }
-    }
-
-    public function renewToken($data)
-    {
-        if ($this->load($data, IranianBaseModel::SCENARIO_REQUEST)) {
-            $response = Yii::$app->apiClient->post(
-                ObOauthClients::PLATFORM_IRABIAN,
-                BaseOpenBanking::IRANIAN_REQUEST,
-                BaseOpenBanking::getUrl(BaseOpenBanking::IRANIAN_REQUEST),
-                $data,
-                $this->getHeaders()
-            );
-            return ResponseHelper::mapFaraboom($response);
+            return $response;
         } else {
             return $this->setErrors($this->model->errors);
         }
     }
 
     /**
-     * Validate the data with the Iranian API (implementation).
-     * @param array $data
+     * @param $data
+     * @return \stdClass
+     */
+    public function renewToken($data)
+    {
+        if ($this->load($data, IranianBaseModel::SCENARIO_REQUEST)) {
+            $response = Yii::$app->apiClient->post(
+                ObOauthClients::PLATFORM_IRABIAN,
+                BaseOpenBanking::IRANIAN_REQUEST,
+                BaseOpenBanking::getUrl(BaseOpenBanking::IRANIAN_RE_NEW_TOKEN, $data),
+                $data,
+                $this->getHeaders()
+            );
+            return $response;
+        } else {
+            return $this->setErrors($this->model->errors);
+        }
+    }
+
+
+    /**
+     * @param $data
      * @return \stdClass
      */
     public function validate($data)
@@ -79,19 +83,19 @@ class Iranian extends OpenBanking implements IranianInterface
             $response = Yii::$app->apiClient->post(
                 ObOauthClients::PLATFORM_IRABIAN,
                 BaseOpenBanking::IRANIAN_VALIDATE,
-                BaseOpenBanking::getUrl(BaseOpenBanking::IRANIAN_VALIDATE),
+                BaseOpenBanking::getUrl(BaseOpenBanking::IRANIAN_VALIDATE, $data),
                 $data,
                 $this->getHeaders()
             );
-            return ResponseHelper::mapFaraboom($response);
+            return $response;
         } else {
             return $this->setErrors($this->model->errors);
         }
     }
 
+
     /**
-     * Check the status of a request.
-     * @param array $data
+     * @param $data
      * @return \stdClass
      */
     public function status($data)
@@ -100,18 +104,19 @@ class Iranian extends OpenBanking implements IranianInterface
             $response = Yii::$app->apiClient->get(
                 ObOauthClients::PLATFORM_IRABIAN,
                 BaseOpenBanking::IRANIAN_STATUS,
+                BaseOpenBanking::getUrl(BaseOpenBanking::IRANIAN_STATUS, $data),
                 $data,
-                $this->getHeaders()
+                $this->getHeaders(true)
             );
-            return ResponseHelper::mapFaraboom($response);
+            return $response;
         } else {
             return $this->setErrors($this->model->errors);
         }
     }
 
+
     /**
-     * Regenerate the report via the API.
-     * @param array $data
+     * @param $data
      * @return \stdClass
      */
     public function reGenerateReport($data)
@@ -120,58 +125,24 @@ class Iranian extends OpenBanking implements IranianInterface
             $response = Yii::$app->apiClient->post(
                 ObOauthClients::PLATFORM_IRABIAN,
                 BaseOpenBanking::IRANIAN_REGENERATE_REPORT,
-                BaseOpenBanking::getUrl(BaseOpenBanking::IRANIAN_REGENERATE_REPORT),
+                BaseOpenBanking::getUrl(BaseOpenBanking::IRANIAN_REGENERATE_REPORT, $data),
                 $data,
                 $this->getHeaders()
             );
-            return ResponseHelper::mapFaraboom($response);
+            return $response;
         } else {
             return $this->setErrors($this->model->errors);
         }
     }
 
     /**
-     * Retrieve the report in XML format.
-     * @param array $data
-     * @return \stdClass
+     * @param $data
+     * @param $scenario
+     * @return bool
      */
-    public function reportXml($data)
+    public function load($data, $scenario): bool
     {
-        if ($this->load($data, IranianBaseModel::SCENARIO_REPORT_XML)) {
-            $response = Yii::$app->apiClient->get(
-                ObOauthClients::PLATFORM_IRABIAN,
-                BaseOpenBanking::IRANIAN_REPORT_XML,
-                $data,
-                $this->getHeaders()
-            );
-            return ResponseHelper::mapFaraboom($response);
-        } else {
-            return $this->setErrors($this->model->errors);
-        }
-    }
 
-    /**
-     * Retrieve the report in PDF format.
-     * @param array $data
-     * @return \stdClass
-     */
-    public function reportPdf($data)
-    {
-        if ($this->load($data, IranianBaseModel::SCENARIO_REPORT_PDF)) {
-            $response = Yii::$app->apiClient->get(
-                ObOauthClients::PLATFORM_IRABIAN,
-                BaseOpenBanking::IRANIAN_REPORT_PDF,
-                $data,
-                $this->getHeaders()
-            );
-            return ResponseHelper::mapFaraboom($response);
-        } else {
-            return $this->setErrors($this->model->errors);
-        }
-    }
-
-    public function load($data, $scenario)
-    {
         $this->model->scenario = $scenario;
         if ($this->model->load($data, '') && $this->model->validate()) {
             return true;
@@ -181,15 +152,26 @@ class Iranian extends OpenBanking implements IranianInterface
         return false;
     }
 
-    public function getHeaders()
+    /**
+     * @return string
+     */
+    public function token(): string
     {
-        $token = Authentication::getToken($this->client);
+        return Authentication::getToken($this->client)->access_token;
+    }
 
+    /**
+     * @param $json_type
+     * @return array
+     */
+    public function getHeaders($json_type = false): array
+    {
+        $response = Authentication::getToken($this->client);
         $headers = [];
         $headers['x-version'] = '2.0';
-        $headers['Authorization'] = 'Bearer ' . $token->access_token;
-        $headers['x-apikey'] = $token->api_key;
-        $headers['Content-Type'] = 'application/x-www-form-' . Client::FORMAT_JSON;
+        $headers['Authorization'] = 'Bearer ' . $response->access_token;
+        $headers['x-apikey'] = $response->api_key;
+        $headers['Content-Type'] = $json_type ? Client::FORMAT_JSON : Client::FORMAT_RAW_URLENCODED;
 
         return $headers;
     }

@@ -17,9 +17,6 @@ interface IranianInterface
     public function reGenerateReport($data);
 
 
-    public function reportXml($data);
-
-
-    public function reportPdf($data);
+    public function renewToken($data);
 
 }

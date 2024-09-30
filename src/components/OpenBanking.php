@@ -24,14 +24,14 @@ class OpenBanking extends Component implements OpenBankingInterface
     {
         $mappedPlatform = BaseOpenBanking::itemAlias('PlatformMap', $platform);
         $mappedService = BaseOpenBanking::itemAlias('ServiceTypeMap', $service);
+
         if (Yii::$app->has($mappedPlatform) && method_exists(Yii::$app->$mappedPlatform, $mappedService)) {
-
             return Yii::$app->$mappedPlatform->$mappedService($body);
-
         } else {
             throw new NotSupportedException('Operation not supported');
         }
     }
+
 
     protected function getUrl($platform, $service)
     {
