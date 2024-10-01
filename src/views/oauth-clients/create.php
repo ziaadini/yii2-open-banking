@@ -5,6 +5,7 @@ use yii\web\View;
 use sadi01\openbanking\models\ObOauthClients;
 
 /** @var View $this */
+/** @var Integer $platform */
 /** @var sadi01\openbanking\models\ObOauthClients $model */
 
 $this->title = Yii::t('openBanking', 'Create Ob Oauth Clients');
@@ -16,9 +17,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <h5><?= Html::encode($this->title) ?></h5>
     </div>
     <div class="card-body">
-        <?= $this->render('_form', [
-            'model' => $model,
-            'platform' => $platform,
+        <?= $this->render(ObOauthClients::itemAlias('View',$platform), [
+            'model' => $model
         ]) ?>
     </div>
 </div>

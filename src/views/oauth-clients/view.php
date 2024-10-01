@@ -16,7 +16,7 @@ YiiAsset::register($this);
 ?>
 <div class="ob-oauth-clients-view card">
     <div class="card-header d-flex justify-content-between">
-        <h3><?= Html::encode($this->title) ?></h3>
+        <h3><?= ObOauthClients::itemAlias('Client', $model->client_id) ?></h3>
         <p>
             <?= Html::a(Yii::t('openBanking', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
             <?= Html::a(Yii::t('openBanking', 'Delete'), ['delete', 'id' => $model->id], [
@@ -33,15 +33,22 @@ YiiAsset::register($this);
             'model' => $model,
             'attributes' => [
                 'id',
-                'client_id',
+                [
+                    'attribute' => 'client_id',
+                    'value' => function ($model) {
+                        return ObOauthClients::itemAlias('Client', $model->client_id);
+                    },
+                    'format' => 'raw',
+                ],
                 'base_url:url',
                 'client_secret',
                 'grant_types',
                 'scope',
                 'username',
                 'password',
-                //'add_on',
+
             ],
         ]) ?>
+
     </div>
 </div>

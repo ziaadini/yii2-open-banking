@@ -82,10 +82,11 @@ class OauthClientsController extends Controller
      */
     public function actionCreate($platform)
     {
-        $model = new ObOauthClients(['scenario' => $platform == ObOauthClients::PLATFORM_FARABOOM ? ObOauthClients::SCENARIO_FARABOOM : ObOauthClients::SCENARIO_FINNOTECH]);
+        $model = new ObOauthClients(['scenario' => ObOauthClients::itemAlias('Scenario',$platform)]);
         $model->client_id = $platform;
 
         if ($model->load($this->request->post()) && $model->save()) {
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -107,10 +108,10 @@ class OauthClientsController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->scenario =  ObOauthClients::itemAlias('Scenario', $model->client_id);
 
-        $model->scenario = $model->client_id == ObOauthClients::PLATFORM_FARABOOM ? ObOauthClients::SCENARIO_FARABOOM : ObOauthClients::SCENARIO_FINNOTECH;
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        if ($model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

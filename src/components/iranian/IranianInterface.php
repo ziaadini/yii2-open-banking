@@ -13,10 +13,9 @@ interface IranianInterface
 
     public function status($data);
 
+    public function renewToken($data);
+
 
     public function reGenerateReport($data);
-
-
-    public function renewToken($data);
 
 }

@@ -30,6 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="dropdown-menu">
                 <li><a class="dropdown-item" href="<?= Url::to(['create', 'platform' => ObOauthClients::PLATFORM_FARABOOM]) ?>">فرابوم</a></li>
                 <li><a class="dropdown-item" href="<?= Url::to(['create', 'platform' => ObOauthClients::PLATFORM_FINNOTECH]) ?>">فینوتک</a></li>
+                <li><a class="dropdown-item" href="<?= Url::to(['create', 'platform' => ObOauthClients::PLATFORM_IRABIAN]) ?>">ایرانیان</a></li>
             </div>
         </div>
         <?php endif; ?>
@@ -43,6 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <ul class="dropdown-menu" style="">
                 <li><a class="dropdown-item" href="<?= Url::to(['create', 'platform' => ObOauthClients::PLATFORM_FARABOOM]) ?>">فرابوم</a></li>
                 <li><a class="dropdown-item" href="<?= Url::to(['create', 'platform' => ObOauthClients::PLATFORM_FINNOTECH]) ?>">فینوتک</a></li>
+                <li><a class="dropdown-item" href="<?= Url::to(['create', 'platform' => ObOauthClients::PLATFORM_IRABIAN]) ?>">ایرانیان</a></li>
             </ul>
         </div>
         <?php endif; ?>

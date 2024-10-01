@@ -17,9 +17,8 @@ $this->params['breadcrumbs'][] = Yii::t('openBanking', 'Update');
 <div class="ob-oauth-clients-update card">
     <div class="card-header"><h6><?= Html::encode($this->title) ?></h6></div>
     <div class="card-body">
-        <?= $this->render('_form', [
-            'model' => $model,
-            'platform' => $model->client_id
+        <?= $this->render(ObOauthClients::itemAlias('View',$model->client_id), [
+            'model' => $model
         ]) ?>
     </div>
 </div>
