@@ -38,6 +38,10 @@ class Authentication extends BaseAuthentication
             $response = Yii::$app->apiClient->post(ObOauthClients::PLATFORM_IRABIAN, BaseOpenBanking::IRANIAN_GET_TOKEN, self::getUrl($client->base_url, self::OAUTH_URL), $body, $headers);
             if ($response['status'] == 200) {
                 $result = $response['data'];
+                if($result->hasError){
+                    print_r($result);
+                    die;
+                }
                 $accessToken = new ObOauthAccessTokens([
                     'access_token' => $result->data->accessToken,
                     'api_key'=>$result->data->apiKey,
