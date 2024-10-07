@@ -24,6 +24,7 @@ class Authentication extends BaseAuthentication
         $accessToken = ObOauthAccessTokens::find()->notExpire()->byClientId($client->client_id)->one();
         $refreshToken = ObOauthRefreshTokens::find()->notExpire()->byClientId($client->client_id)->one();
 
+
         if (!$accessToken instanceof ObOauthAccessTokens && !$refreshToken instanceof ObOauthRefreshTokens) {
             $body = [
                 'username' => $client->username,
@@ -38,13 +39,13 @@ class Authentication extends BaseAuthentication
             $response = Yii::$app->apiClient->post(ObOauthClients::PLATFORM_IRABIAN, BaseOpenBanking::IRANIAN_GET_TOKEN, self::getUrl($client->base_url, self::OAUTH_URL), $body, $headers);
             if ($response['status'] == 200) {
                 $result = $response['data'];
-                if($result->hasError){
+                if ($result->hasError) {
                     print_r($result);
                     die;
                 }
                 $accessToken = new ObOauthAccessTokens([
                     'access_token' => $result->data->accessToken,
-                    'api_key'=>$result->data->apiKey,
+                    'api_key' => $result->data->apiKey,
                     'client_id' => (string)ObOauthClients::PLATFORM_IRABIAN,
                     'user_id' => Yii::$app->user->id,
                     'expires' => date('Y-m-d H:i:s', strtotime('+12 hour')),
@@ -77,30 +78,47 @@ class Authentication extends BaseAuthentication
         return null;
     }
 
-
-    public static function refreshToken($refresh_token,$access_toekn, ObOauthClients $client)
+    public static function refreshToken($refresh_token, ObOauthClients $client)
     {
+        $accessToken = ObOauthAccessTokens::find()
+            ->byClientId($client->client_id)
+            ->orderBy(['id' => SORT_DESC])
+            ->limit(1)
+            ->one();
+
         $body = [
-            'AccessToken' => $access_toekn->access_token,
+            'AccessToken' => $accessToken->access_token,
             'RefreshToken' => $refresh_token->refresh_token,
         ];
 
-        $headers['x-version'] = '2.0';
-        $headers['Content-Type'] = 'application/x-www-form-' . Client::FORMAT_JSON;
 
-        $response = Yii::$app->apiClient->post(ObOauthClients::PLATFORM_IRABIAN, BaseOpenBanking::IRANIAN_REFRESH_TOKEN, self::getUrl($client->base_url, self::OAUTH_URL), $body, $headers);
+        $headers['x-version'] = '2.0';
+        $headers['Content-Type'] = Client::FORMAT_RAW_URLENCODED;
+        $response = Yii::$app->apiClient->put(ObOauthClients::PLATFORM_IRABIAN, BaseOpenBanking::IRANIAN_REFRESH_TOKEN, self::getUrl($client->base_url, self::OAUTH_URL), $body, $headers);
+
 
         if ($response['status'] === 200) {
             $result = $response['body']->result;
             $accessToken = new ObOauthAccessTokens([
-                'access_token' => $result->access_token,
-                'expires' => time() + $result->expires_in,
-                'scope' => $result->scope,
+                'access_token' => $result->data->accessToken,
+                'api_key' => $accessToken->apiKey,
+                'client_id' => (string)ObOauthClients::PLATFORM_IRABIAN,
+                'user_id' => Yii::$app->user->id,
+                'expires' => date('Y-m-d H:i:s', strtotime('+12 hour')),
             ]);
             $accessToken->save();
+            $refreshToken = new ObOauthRefreshTokens([
+                'refresh_token' => $result->data->refreshToken,
+                'user_id' => Yii::$app->user->id,
+                'client_id' => (string)ObOauthClients::PLATFORM_IRABIAN,
+                'expires' => date('Y-m-d H:i:s', strtotime('+1 day')),
+            ]);
+            $refreshToken->save();
             return $accessToken;
+        } else {
+            print_r($response);
+            die;
         }
-
         return null;
     }
 
