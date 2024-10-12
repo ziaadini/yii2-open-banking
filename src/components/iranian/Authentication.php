@@ -60,7 +60,7 @@ class Authentication extends BaseAuthentication
                     'refresh_token' => $result->data->refreshToken,
                     'user_id' => Yii::$app->user->id,
                     'client_id' => (string)ObOauthClients::PLATFORM_IRABIAN,
-                    'expires' => date('Y-m-d H:i:s', strtotime('+1 day')),
+                    'expires' => date('Y-m-d H:i:s', strtotime('+12 hour')),
                 ]);
 
                 $refreshToken->save();
