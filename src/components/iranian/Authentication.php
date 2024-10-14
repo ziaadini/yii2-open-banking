@@ -68,3 +68,4 @@ class Authentication extends BaseAuthentication
         return 'https://app.ics24.ir/' . $url;
     }
 }
+
