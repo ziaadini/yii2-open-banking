@@ -135,6 +135,22 @@ class Iranian extends OpenBanking implements IranianInterface
         }
     }
 
+    public function reportJson($data)
+    {
+        if ($this->load($data, IranianBaseModel::SCENARIO_REPORT_JSON)) {
+            $response = Yii::$app->apiClient->post(
+                ObOauthClients::PLATFORM_IRABIAN,
+                BaseOpenBanking::IRANIAN_REPORT_JSON,
+                BaseOpenBanking::getUrl(BaseOpenBanking::IRANIAN_REPORT_JSON, $data),
+                $data,
+                $this->getHeaders(true)
+            );
+            return $response;
+        } else {
+            return $this->setErrors($this->model->errors);
+        }
+    }
+
     /**
      * @param $data
      * @param $scenario

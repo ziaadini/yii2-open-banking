@@ -18,4 +18,6 @@ interface IranianInterface
 
     public function reGenerateReport($data);
 
+    public function reportJson($data);
+
 }

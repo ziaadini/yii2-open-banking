@@ -19,6 +19,7 @@ class BaseOpenBanking extends \yii\db\ActiveRecord
     const FARABOOM_BASE_URL = 'https://api.faraboom.co/v1/';
     const FINNOTECH_BASE_URL = 'https://apibeta.finnotech.ir';
     const IRANIAN_BASE_URL = 'https://app.ics24.ir/b2b/api';
+    const REPORT_IRANIAN_BASE_URL = 'http://app.ics24.ir';
 
     const FARABOOM_GET_TOKEN = 1;
     const FARABOOM_DEPOSIT_TO_SHABA = 2;
@@ -81,8 +82,8 @@ class BaseOpenBanking extends \yii\db\ActiveRecord
     const IRANIAN_VALIDATE = 55;
     const IRANIAN_STATUS = 56;
     const IRANIAN_REGENERATE_REPORT = 57;
-    const IRANIAN_REPORT_XML = 58;
-    const IRANIAN_REPORT_PDF = 59;
+    const IRANIAN_REPORT_JSON = 58;
+
 
 
     public function rules()
@@ -178,8 +179,7 @@ class BaseOpenBanking extends \yii\db\ActiveRecord
                 self::IRANIAN_VALIDATE => Yii::t('openBanking', 'Validate Request'),
                 self::IRANIAN_STATUS => Yii::t('openBanking', 'Check Request Status'),
                 self::IRANIAN_REGENERATE_REPORT => Yii::t('openBanking', 'Regenerate Report'),
-                self::IRANIAN_REPORT_XML => Yii::t('openBanking', 'Generate Report in XML'),
-                self::IRANIAN_REPORT_PDF => Yii::t('openBanking', 'Generate Report in PDF'),
+                self::IRANIAN_REPORT_JSON => Yii::t('openBanking', 'Generate Report in JSON'),
             ],
             'ServiceTypeMap' => [
                 self::FARABOOM_GET_TOKEN => 'token',
@@ -239,8 +239,7 @@ class BaseOpenBanking extends \yii\db\ActiveRecord
                 self::IRANIAN_VALIDATE => 'validate',
                 self::IRANIAN_STATUS => 'status',
                 self::IRANIAN_REGENERATE_REPORT => 'reGenerateReport',
-                self::IRANIAN_REPORT_XML => 'reportXml',
-                self::IRANIAN_REPORT_PDF => 'reportPdf',
+                self::IRANIAN_REPORT_JSON => 'reportJson',
             ],
             'ServiceUrl' => [
                 self::FARABOOM_GET_TOKEN => self::FARABOOM_BASE_URL,
@@ -302,8 +301,7 @@ class BaseOpenBanking extends \yii\db\ActiveRecord
                 self::IRANIAN_VALIDATE =>[self::IRANIAN_BASE_URL . '/request/'. ($params['hash_code'] ?? '') .'/validate'],
                 self::IRANIAN_STATUS => [self::IRANIAN_BASE_URL . '/request/'. ($params['hash_code'] ?? '') .'/status'],
                 self::IRANIAN_REGENERATE_REPORT => [self::IRANIAN_BASE_URL . '/request/'. ($params['hash_code'] ?? '') .'/ReGenerateReport'],
-                self::IRANIAN_REPORT_XML => [self::IRANIAN_BASE_URL . '/report/'. ($params['report_code'] ?? '').'/xml'],
-                self::IRANIAN_REPORT_PDF => [self::IRANIAN_BASE_URL . '/request/ '.($params['report_code'] ?? '').'/pdfReport'],
+                self::IRANIAN_REPORT_JSON => [self::REPORT_IRANIAN_BASE_URL . '/report/'. ($params['report_code'] ?? '').'/json'],
             ],
         ];
 

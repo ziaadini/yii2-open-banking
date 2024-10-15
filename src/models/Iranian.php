@@ -9,6 +9,7 @@ class Iranian extends Model
 {
     public $hash_code;
     public $api_key;
+    public $report_code;
 
 
     const SCENARIO_REQUEST = 'request';
@@ -16,8 +17,7 @@ class Iranian extends Model
     const SCENARIO_VALIDATE = 'validate';
     const SCENARIO_STATUS = 'status';
     const SCENARIO_REGENERATE_REPORT = 're-generate-report';
-    const SCENARIO_REPORT_XML = 'xml-report';
-    const SCENARIO_REPORT_PDF = 'pdf-report';
+    const SCENARIO_REPORT_JSON = 'json-report';
 
 
     public function rules()
@@ -33,8 +33,7 @@ class Iranian extends Model
                 self::SCENARIO_VALIDATE,
             ]],
             [['report_code'], 'required', 'on' => [
-                self::SCENARIO_REPORT_XML,
-                self::SCENARIO_REPORT_PDF,
+                self::SCENARIO_REPORT_JSON,
             ]],
             [['hash_code','report_code'], 'string'],
             [['code'], 'integer'],
@@ -58,8 +57,7 @@ class Iranian extends Model
         $scenarios[self::SCENARIO_VALIDATE] = ['hash_code'];
         $scenarios[self::SCENARIO_STATUS] = ['hash_code'];
         $scenarios[self::SCENARIO_REGENERATE_REPORT] = ['hash_code'];
-        $scenarios[self::SCENARIO_REPORT_XML] = ['hash_code'];
-        $scenarios[self::SCENARIO_REPORT_PDF] = ['hash_code'];
+        $scenarios[self::SCENARIO_REPORT_JSON] = ['report_code'];
         $scenarios[self::SCENARIO_RENEW_TOKEN] = ['hash_code'];
 
         return $scenarios;
